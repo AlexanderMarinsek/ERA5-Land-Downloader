@@ -33,6 +33,7 @@ def convert_era5_land (params, dirname):
     
     # Iterate ERA5-Land parameters
     for i, param in enumerate(params):
+        print param
         # Extract param-specific measurements
         param_grbs = grbs.select(name=param)
         # Add initial dummy element to match size (later dleeted)

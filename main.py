@@ -13,19 +13,22 @@ import numpy as np
 base_dir = os.path.dirname(__file__)
 
 # Select desired time period
-start_date = datetime.date(2019, 1, 1)
-stop_date = datetime.date(2019, 1, 1)
+start_date = datetime.date(2018, 1, 1)
+stop_date = datetime.date(2018, 12, 31)
 
 # Select ERA5-Land area coverage
-era5_area = [46.0, 15.0, 46.1, 15.2]  
+era5_area = [44.5, 28.5, 44.7, 28.7]  
+#era5_area = [45.8, 14.5, 45.5, 14.7]  
 #era5_area = [46.0, 15.0, 46.0, 15.0]  
 
 # Select ERA5-Land data variables
 # Later select ... var-names / param-names ... [:,0] / [:,1]
 era5_names = np.array([
-    [ '10m_u_component_of_wind',        '10 metre V wind component' ],
-    [ '10m_v_component_of_wind',        '10 metre U wind component' ],
-    [ '2m_temperature',                 '2 metre temperature' ]
+    [ '10m_u_component_of_wind',            '10 metre V wind component' ],
+    [ '10m_v_component_of_wind',            '10 metre U wind component' ],
+    [ '2m_temperature',                     '2 metre temperature' ],
+    [ 'surface_pressure',                   'Surface pressure' ],
+    [ 'surface_solar_radiation_downwards',  'Surface solar radiation downwards' ]
 ])
 
 def main ():

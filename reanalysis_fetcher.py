@@ -1,18 +1,18 @@
 
 from v_print import vPrint, vPrint_init # Verbose print
 
-import cdsapi # ERA5-Land API
+import cdsapi # reanalysis API
 
 c = cdsapi.Client()
 
 """
-Fetch ERA5-Land data and save to file
+Fetch reanalysis data and save to file
     p1: target date ... datetime.date() object
     p2: target area ... list, 0.1 accuracy (ex. [46.0, 14.2, 45.4, 15])
     p3: target variable names ... list of strings (not equal to parameter names)
     p4: target directory ... path to data directory
 """
-def fetch_era5_land (date, area, vars, dirname):
+def fetch_reanalysis (dataset, date, area, vars, dirname):
     
     vPrint( "" )
     vPrint( "Retrieving grib data for: %s" % str(date) )
@@ -21,7 +21,7 @@ def fetch_era5_land (date, area, vars, dirname):
     vPrint( "\tDirname: \n%s" % dirname )
     
     r = c.retrieve(
-        'reanalysis-era5-land',
+        dataset,
         {
             'area': area,
             'format': 'grib',

@@ -3,4 +3,5 @@
 *.pyc
 
 # Data
-ERA5-Land
+Data/
+

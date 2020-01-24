@@ -16,11 +16,11 @@ import numpy as np
 
 
 """
-Convert ERA5-Land format to NPZ (numpy) and save to file
+Convert reanalysis format to NPZ (numpy) and save to file
     p1: target parameter ... list of strings (view ECMWF documentation)
     p2: target directory ... path to data directory
 """
-def convert_era5_land (params, dirname):
+def convert_reanalysis (params, dirname):
     grbs = pygrib.open(dirname + 'data.grib')
     num_of_rows = 1.0 * len(grbs.select()) / len(params)
     
@@ -31,7 +31,7 @@ def convert_era5_land (params, dirname):
     
     output_data = []
     
-    # Iterate ERA5-Land parameters
+    # Iterate reanalysis parameters
     for i, param in enumerate(params):
         print param
         # Extract param-specific measurements

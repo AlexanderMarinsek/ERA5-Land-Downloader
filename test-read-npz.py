@@ -14,7 +14,7 @@ import numpy as np
 
 
 # READ
-filename = 'ERA5-Land/Area-44.5-28.5-44.7-28.7/2018/12/01/data.npz'
+filename = 'ERA5-Land/Area-44.5-28.5-44.7-28.7-former/2017/12/01/data.npz'
 #filename = 'ERA5-Land/Area-46.0-15.0-46.0-15.0/2019/01/01/data.npz'
 
 data = np.load(filename, allow_pickle=True)

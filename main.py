@@ -1,8 +1,8 @@
 
 
 from v_print import vPrint, vPrint_init # Verbose print
-from era5_land_fetcher import fetch_era5_land # fetch ERA5-Land data
-from era5_land_converter import convert_era5_land # Convert ERA5-Land format
+from reanalysis_fetcher import fetch_reanalysis # fetch reanalysis data
+from reanalysis_converter import convert_reanalysis # Convert reanalysis format
 
 import os
 import errno
@@ -13,30 +13,35 @@ import numpy as np
 base_dir = os.path.dirname(__file__)
 
 # Select desired time period
-start_date = datetime.date(2018, 1, 1)
-stop_date = datetime.date(2018, 12, 31)
+#start_date = datetime.date(2016, 1, 1)
+start_date = datetime.date(2019, 1, 1)
+stop_date = datetime.date(2019, 1, 1)
 
-# Select ERA5-Land area coverage
-era5_area = [44.5, 28.5, 44.7, 28.7]  
-#era5_area = [45.8, 14.5, 45.5, 14.7]  
-#era5_area = [46.0, 15.0, 46.0, 15.0]  
+# Select reanalysis area coverage
+reanalysis_area = [45.7, 14.6, 45.7, 14.6]  
+#reanalysis_area = [45.8, 14.5, 45.5, 14.7]  
+#reanalysis_area = [46.0, 15.0, 46.0, 15.0]  
 
-# Select ERA5-Land data variables
+#dataset = "reanalysis-era5-single-levels"
+dataset = "reanalysis-era5-land"
+
+# Select reanalysis data variables
 # Later select ... var-names / param-names ... [:,0] / [:,1]
-era5_names = np.array([
+data_vars = np.array([
     [ '10m_u_component_of_wind',            '10 metre V wind component' ],
     [ '10m_v_component_of_wind',            '10 metre U wind component' ],
     [ '2m_temperature',                     '2 metre temperature' ],
     [ 'surface_pressure',                   'Surface pressure' ],
-    [ 'surface_solar_radiation_downwards',  'Surface solar radiation downwards' ]
+    [ 'surface_solar_radiation_downwards',  'Surface solar radiation downwards' ],
+    [ '2m_dewpoint_temperature',            '2 metre dewpoint temperature' ]
 ])
 
 def main ():
     
     # Import global vars
-    global start_date, stop_date, era5_area, era5_names
+    global start_date, stop_date, reanalysis_area, data_vars
         
-    area_str = "-".join([str(elem) for elem in era5_area])
+    area_str = "-".join([str(elem) for elem in reanalysis_area])
     
     # Initialize (non)verbose printing
     vPrint_init(True)
@@ -60,8 +65,8 @@ def main ():
         
         date = start_date + datetime.timedelta(days=i)
         # Generate path
-        rel_dirname = "ERA5-Land/Area-%s/%04d/%02d/%02d/" % \
-            (area_str, date.year, date.month, date.day)
+        rel_dirname = "Data/%s/Area-%s/%04d/%02d/%02d/" % \
+            (dataset, area_str, date.year, date.month, date.day)
         dirname = os.path.join(base_dir, rel_dirname)
         
         # *** MAIN THREE STEPS (comment out as needed) ***
@@ -69,16 +74,22 @@ def main ():
         # Create data directory, if non-existent
         create_data_dir (date, dirname)
         
-        # Fetch ERA5-Land data
-        fetch_era5_land (date, era5_area, era5_names[:,0].tolist(), dirname)
+        # Fetch reanalysis data
+        fetch_reanalysis (dataset, date, reanalysis_area, data_vars[:,0].tolist(), dirname)
         
-        # Convert ERA5-Land format to NPZ (numpy)
-        convert_era5_land (era5_names[:,1], dirname)
+        # Convert reanalysis format to NPZ (numpy)
+        convert_reanalysis (data_vars[:,1], dirname)
     
+        
+    now = datetime.datetime.now()
+    dt_string = now.strftime("%Y-%m-%dT%H:%M:%S")
+    vPrint( "" )
+    vPrint( "ENDED: %s" % dt_string )
+    vPrint( "" )
 
 
 """
-Create directory for saving ERA5 data if it does not exist
+Create directory for saving reanalysis data if it does not exist
     p1: datetime.date() object
     p2: target directory ... path to data directory
 """
